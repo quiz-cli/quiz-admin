@@ -23,5 +23,19 @@ build-backend = "hatchling.build"
 [tool.uv.sources]
 quiz-common = { git = "https://github.com/quiz-cli/quiz-common.git", rev = "main" }
 
+[dependency-groups]
+dev = [
+    "ruff>=0.14.10",
+]
+
 [project.scripts]
 quiz-admin = "quiz_admin.__main__:main"
+
+[tool.ruff.lint]
+select = ["ALL"]
+ignore = [
+    "D203",
+    "D212",
+    "COM812",
+    "T201",
+]
