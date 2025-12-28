@@ -28,9 +28,6 @@ dev = [
     "ruff>=0.14.10",
 ]
 
-[project.scripts]
-quiz-admin = "quiz_admin.__main__:main"
-
 [tool.ruff.lint]
 select = ["ALL"]
 ignore = [
@@ -39,3 +36,6 @@ ignore = [
     "COM812",
     "T201",
 ]
+
+[project.scripts]
+quiz-admin = "quiz_admin.__main__:main"
