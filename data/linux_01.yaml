@@ -47,11 +47,11 @@ questions:
 
   - text: Jaký je standardní port pro SSH (Secure Shell) v Linuxu?
     options:
-      - answer: 21
+      - answer: "21"
         correct: false
-      - answer: 22
+      - answer: "22"
         correct: true
-      - answer: 23
+      - answer: "23"
         correct: false
-      - answer: 80
+      - answer: "80"
         correct: false
