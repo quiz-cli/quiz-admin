@@ -50,6 +50,7 @@ async def receive_messages(ws: ClientConnection) -> None:
         except:
             print(response)
 
+
 def print_question(question: dict[str, list]) -> None:
     """Nicely print text of the question with possible answeres."""
     print(f"Question: {question['text']}")
