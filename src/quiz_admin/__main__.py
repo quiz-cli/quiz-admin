@@ -46,11 +46,8 @@ async def receive_messages(ws: ClientConnection) -> None:
         response = await ws.recv()
         try:
             message = json.loads(response)
-            try:
-                print_question(message)
-            except TypeError:
-                print(response)
-        except json.JSONDecodeError:
+            print_question(message)
+        except (TypeError, json.JSONDecodeError):
             print(response)
 
 
