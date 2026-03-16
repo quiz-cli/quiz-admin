@@ -51,7 +51,7 @@ async def receive_messages(ws: ClientConnection) -> None:
             print(response)
 
 
-def print_question(question: dict[str, list|str]) -> None:
+def print_question(question: dict[str, list | str]) -> None:
     """Nicely print text of the question with possible answers."""
     print(f"Question: {question['text']}")
     for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
