@@ -7,6 +7,7 @@ control the quiz session via a websocket connection.
 
 import asyncio
 import json
+import string
 import sys
 from pathlib import Path
 from typing import Any
@@ -43,7 +44,18 @@ async def receive_messages(ws: ClientConnection) -> None:
     """Receive messages from the server and print them to the console."""
     while True:
         response = await ws.recv()
-        print(response)
+        try:
+            message = json.loads(response)
+            print_question(message)
+        except (TypeError, json.JSONDecodeError):
+            print(response)
+
+
+def print_question(question: dict[str, list | str]) -> None:
+    """Nicely print text of the question with possible answers."""
+    print(f"Question: {question['text']}")
+    for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
+        print(f"\t{letter}) {opt}")
 
 
 def main() -> None:
