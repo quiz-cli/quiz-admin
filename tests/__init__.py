@@ -1,4 +1,5 @@
-"""Tests for quiz-admin application.
+"""
+Tests for quiz-admin application.
 
 This package contains all unit and integration tests for the quiz-admin module.
 Tests verify:

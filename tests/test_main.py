@@ -1,5 +1,7 @@
 """Tests for quiz-admin main module."""
 
+# ruff: noqa: S101
+
 from quiz_common import Quiz
 
 
@@ -27,6 +29,15 @@ class TestQuizValidation:
         dumped = validated_quiz.model_dump()
 
         # ASSERT
-        assert dumped["questions"][0]["options"][0]["answer"] == "21"
-        assert isinstance(dumped["questions"][0]["options"][0]["answer"], str)
-        assert dumped["questions"][0]["options"][1]["answer"] == "22"
+        # Check that first answer is converted to string "21"
+        assert dumped["questions"][0]["options"][0]["answer"] == "21", (
+            "First answer should be converted to string '21'"
+        )
+        assert isinstance(dumped["questions"][0]["options"][0]["answer"], str), (
+            "First answer should be of type str"
+        )
+
+        # Check that second answer is converted to string "22"
+        assert dumped["questions"][0]["options"][1]["answer"] == "22", (
+            "Second answer should be converted to string '22'"
+        )
