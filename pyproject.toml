@@ -27,6 +27,7 @@ quiz-common = { git = "https://github.com/quiz-cli/quiz-common.git", rev = "main
 dev = [
     "ruff>=0.14.10",
     "ty>=0.0.9",
+    "pytest>=8.0.0",
 ]
 
 [tool.ruff.lint]
