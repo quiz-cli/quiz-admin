@@ -76,7 +76,7 @@ def main() -> None:
         with Path(quiz_file).open(encoding="utf-8") as file:
             quiz_data = YAML(typ="safe").load(file)
 
-        Quiz(**quiz_data)  # Load to validate a structure
+        validated_quiz = Quiz(**quiz_data)
 
     except (OSError, YAMLError) as e:
         sys.exit(str(e))
@@ -84,7 +84,7 @@ def main() -> None:
         sys.exit(f"TODO: better error handling\n{e}")
 
     try:
-        asyncio.run(send_receive_messages(server_url, quiz_data))
+        asyncio.run(send_receive_messages(server_url, validated_quiz.model_dump()))
     except OSError as e:
         sys.exit(f"Admin: cannot reach server\n{e}")
     except ConnectionClosedOK as e:
