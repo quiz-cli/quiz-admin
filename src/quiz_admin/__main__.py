@@ -49,7 +49,6 @@ async def receive_messages(ws: ClientConnection) -> None:
                 question = Question(
                     text=message.get("text"), options=message.get("options")
                 )
-                print(question)
                 question.print_question()
         except (TypeError, json.JSONDecodeError, AttributeError):
             print(response)
