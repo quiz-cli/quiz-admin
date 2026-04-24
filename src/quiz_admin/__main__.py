@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 import aioconsole
-from quiz_common.models import Quiz, Question
+from quiz_common.models import Question, Quiz
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 from websockets import ClientConnection, connect
