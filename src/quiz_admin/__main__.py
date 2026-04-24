@@ -12,7 +12,7 @@ from pathlib import Path
 from typing import Any
 
 import aioconsole
-from quiz_common.models import Quiz
+from quiz_common.models import Quiz, Question
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 from websockets import ClientConnection, connect
@@ -45,10 +45,12 @@ async def receive_messages(ws: ClientConnection) -> None:
         response = await ws.recv()
         try:
             message = json.loads(response)
-            question = Question(
-                text=message.get("text"), options=message.get("options")
-            )
-            question.print_question()
+            if message.get("type") == "question":
+                question = Question(
+                    text=message.get("text"), options=message.get("options")
+                )
+                print(question)
+                question.print_question()
         except (TypeError, json.JSONDecodeError, AttributeError):
             print(response)
 
