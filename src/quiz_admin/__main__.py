@@ -7,13 +7,12 @@ control the quiz session via a websocket connection.
 
 import asyncio
 import json
-import string
 import sys
 from pathlib import Path
 from typing import Any
 
 import aioconsole
-from quiz_common.models import Quiz
+from quiz_common.models import Question, Quiz
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 from websockets import ClientConnection, connect
@@ -46,16 +45,13 @@ async def receive_messages(ws: ClientConnection) -> None:
         response = await ws.recv()
         try:
             message = json.loads(response)
-            print_question(message)
-        except (TypeError, json.JSONDecodeError):
+            if message.get("type") == "question":
+                question = Question(
+                    text=message.get("text"), options=message.get("options")
+                )
+                question.print_question()
+        except (TypeError, json.JSONDecodeError, AttributeError):
             print(response)
-
-
-def print_question(question: dict[str, list | str]) -> None:
-    """Nicely print text of the question with possible answers."""
-    print(f"Question: {question['text']}")
-    for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
-        print(f"\t{letter}) {opt}")
 
 
 def main() -> None:
