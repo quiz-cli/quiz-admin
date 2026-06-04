@@ -53,11 +53,13 @@ async def receive_messages(ws: ClientConnection) -> None:
         except (TypeError, json.JSONDecodeError):
             print(response)
 
+
 def print_final_scores(scores: list[dict]) -> None:
     """Print final player scores ordered from highest to lowest."""
     print("Let's check the final scores!")
     for score in scores:
         print(f"{score['player']}: {score['correct_count']}")
+
 
 def print_question(question: dict[str, list | str]) -> None:
     """Nicely print text of the question with possible answers."""
