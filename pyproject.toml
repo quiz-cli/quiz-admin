@@ -36,6 +36,7 @@ ignore = [
     "D212",
     "COM812",
     "T201",
+    "CPY001",
 ]
 
 [project.scripts]
