@@ -13,11 +13,13 @@ from pathlib import Path
 from typing import Any
 
 import aioconsole
-from quiz_common.models import Question, Quiz
+from quiz_common.models import Quiz
 from ruamel.yaml import YAML
 from ruamel.yaml.error import YAMLError
 from websockets import ClientConnection, connect
 from websockets.exceptions import ConnectionClosedError, ConnectionClosedOK
+
+from quiz_admin.models import GameLog
 
 
 async def send_receive_messages(uri: str, quiz_data: dict[str, Any]) -> None:
@@ -70,84 +72,6 @@ async def receive_messages(ws: ClientConnection, quiz: Quiz) -> None:
             print(response)
 
 
-def print_final_scores(scores: list[dict]) -> None:
-    """Print final player scores ordered from highest to lowest."""
-    print("Let's check the final scores!")
-    for score in scores:
-        print(f"{score['player']}: {score['correct_count']}")
-
-
-def correct_answer(question: Question) -> str:
-    """Extract the correct answer letters from a question."""
-    correct_answer_string = ""
-    for letter, opt in zip(string.ascii_letters, question.options, strict=False):
-        if opt.correct:
-            correct_answer_string += letter
-    return correct_answer_string
-
-
-class GameLog:
-    """Keep accepted answers and scores for one quiz run."""
-
-    def __init__(self, quiz: Quiz) -> None:
-        """Initialize an empty log for the given quiz."""
-        self.quiz = quiz
-        self._results: dict[tuple[str, int], dict] = {}
-
-    def record_answer(self, event: dict) -> None:
-        """Evaluate and store an accepted answer event from the server."""
-        question_number = event["question_number"]
-        correct = set(event["answer"].lower().strip()) == set(
-            correct_answer(self.quiz.questions[question_number])
-        )
-        self._results[(event["player"], question_number)] = {
-            "answer": event["answer"],
-            "correct": correct,
-            "points": int(correct),
-        }
-
-    def final_results(self, player_names: list[str]) -> dict:
-        """Return final scores and per-player results."""
-        results_by_player = {
-            player_name: self.for_player(player_name) for player_name in player_names
-        }
-        scores = [
-            {
-                "player": player_name,
-                "correct_count": sum(
-                    result["points"] for result in results_by_player[player_name]
-                ),
-            }
-            for player_name in player_names
-        ]
-
-        return {
-            "scores": sorted(
-                scores,
-                key=lambda score: (-score["correct_count"], score["player"]),
-            ),
-            "results": results_by_player,
-        }
-
-    def for_player(self, player_name: str) -> list[dict]:
-        """Return all recorded results for one player."""
-        return [
-            {
-                "question_number": number,
-                **result,
-            }
-            for (player, number), result in self._results.items()
-            if player == player_name
-        ]
-
-
-def print_question(question: dict[str, list | str]) -> None:
-    """Nicely print text of the question with possible answers."""
-    print(f"Question: {question['text']}")
-    for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
-        print(f"\t{letter}) {opt}")
-
-
 def main() -> None:
     """
     Script entry point.
@@ -183,3 +107,17 @@ def main() -> None:
         sys.exit(f"Admin: server disconected\n{e}")
     except KeyboardInterrupt:
         sys.exit("\nAdmin: exit")
+
+
+def print_final_scores(scores: list[dict]) -> None:
+    """Print final player scores ordered from highest to lowest."""
+    print("Let's check the final scores!")
+    for score in scores:
+        print(f"{score['player']}: {score['correct_count']}")
+
+
+def print_question(question: dict[str, list | str]) -> None:
+    """Nicely print text of the question with possible answers."""
+    print(f"Question: {question['text']}")
+    for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
+        print(f"\t{letter}) {opt}")
