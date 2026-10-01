@@ -35,7 +35,7 @@ async def send_receive_messages(uri: str, quiz_data: dict[str, Any]) -> None:
 async def send_messages(ws: ClientConnection) -> None:
     """Prompt the user for input and send messages to the server over the websocket."""
     while True:
-        user_input = await aioconsole.ainput("Send 'y' for the next question\n")
+        user_input = await aioconsole.ainput("Send 'y' to continue\n")
         if user_input:
             await ws.send(user_input)
 
@@ -46,7 +46,12 @@ async def receive_messages(ws: ClientConnection) -> None:
         response = await ws.recv()
         try:
             message = json.loads(response)
-            print_question(message)
+            if isinstance(message, dict) and message.get("type") == "question":
+                print_question(message)
+            elif isinstance(message, dict) and message.get("type") == "question_result":
+                print(f"Correct answer: {message['correct_answer']}")
+            else:
+                print(message)
         except (TypeError, json.JSONDecodeError):
             print(response)
 
