@@ -2,12 +2,14 @@
 
 import asyncio
 from dataclasses import dataclass
-from typing import cast
+from typing import TYPE_CHECKING, cast
 
 import pytest
-from websockets.asyncio.client import ClientConnection
 
 from quiz_admin.__main__ import receive_messages
+
+if TYPE_CHECKING:
+    from websockets.asyncio.client import ClientConnection
 
 
 class StopReceivingError(Exception):
@@ -38,6 +40,6 @@ def test_receive_messages_prints_correct_answer(
     )
 
     with pytest.raises(StopReceivingError):
-        asyncio.run(receive_messages(cast(ClientConnection, websocket)))
+        asyncio.run(receive_messages(cast("ClientConnection", websocket)))
 
     assert capsys.readouterr().out == "Correct answer: a\n"
