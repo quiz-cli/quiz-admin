@@ -35,20 +35,16 @@ class GameLog:
             player_name: self.results_for_player(player_name)
             for player_name in player_names
         }
-        scores = [
-            {
-                "player": player_name,
-                "correct_count": sum(
-                    result["points"] for result in results_by_player[player_name]
-                ),
-            }
+        scores = {
+            player_name: sum(
+                result["points"] for result in results_by_player[player_name]
+            )
             for player_name in player_names
-        ]
+        }
 
         return {
-            "scores": sorted(
-                scores,
-                key=lambda score: (-score["correct_count"], score["player"]),
+            "scores": dict(
+                sorted(scores.items(), key=lambda item: (-item[1], item[0]))
             ),
             "results": results_by_player,
         }
