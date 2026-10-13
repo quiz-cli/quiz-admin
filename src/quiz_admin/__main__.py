@@ -10,7 +10,6 @@ import json
 import string
 import sys
 from pathlib import Path
-from typing import Any
 
 import aioconsole
 from quiz_common.models import Quiz
@@ -19,8 +18,10 @@ from ruamel.yaml.error import YAMLError
 from websockets import ClientConnection, connect
 from websockets.exceptions import ConnectionClosedError, ConnectionClosedOK
 
+from quiz_admin.models import GameLog
 
-async def send_receive_messages(uri: str, quiz_data: dict[str, Any]) -> None:
+
+async def send_receive_messages(uri: str, quiz: Quiz) -> None:
     """
     Establish a websocket connection to the server.
 
@@ -28,8 +29,8 @@ async def send_receive_messages(uri: str, quiz_data: dict[str, Any]) -> None:
     """
     async with connect(uri) as ws:
         # Initial sending the whole quiz data to the server
-        await ws.send(json.dumps(quiz_data))
-        await asyncio.gather(send_messages(ws), receive_messages(ws))
+        await ws.send(quiz.model_dump_json())
+        await asyncio.gather(send_messages(ws), receive_messages(ws, quiz))
 
 
 async def send_messages(ws: ClientConnection) -> None:
@@ -40,27 +41,38 @@ async def send_messages(ws: ClientConnection) -> None:
             await ws.send(user_input)
 
 
-async def receive_messages(ws: ClientConnection) -> None:
+async def receive_messages(ws: ClientConnection, quiz: Quiz) -> None:
     """Receive messages from the server and print them to the console."""
+    game_log = GameLog(quiz)
     while True:
         response = await ws.recv()
         try:
             message = json.loads(response)
-            if isinstance(message, dict) and message.get("type") == "question":
-                print_question(message)
-            elif isinstance(message, dict) and message.get("type") == "question_result":
-                print(f"Correct answer: {message['correct_answer']}")
-            else:
+            if not isinstance(message, dict):
                 print(message)
+                continue
+            match message.get("type"):
+                case "question":
+                    print_question(message)
+                case "question_result":
+                    print(f"Correct answer: {message['correct_answer']}")
+                case "answer":
+                    game_log.record_answer(message)
+                case "quiz_finished":
+                    final_results = game_log.final_results(message.get("players", []))
+                    print_final_scores(final_results["scores"])
+                    await ws.send(
+                        json.dumps(
+                            {
+                                "type": "final_results",
+                                **final_results,
+                            }
+                        )
+                    )
+                case _:
+                    print(message)
         except (TypeError, json.JSONDecodeError):
             print(response)
-
-
-def print_question(question: dict[str, list | str]) -> None:
-    """Nicely print text of the question with possible answers."""
-    print(f"Question: {question['text']}")
-    for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
-        print(f"\t{letter}) {opt}")
 
 
 def main() -> None:
@@ -89,7 +101,7 @@ def main() -> None:
         sys.exit(f"TODO: better error handling\n{e}")
 
     try:
-        asyncio.run(send_receive_messages(server_url, validated_quiz.model_dump()))
+        asyncio.run(send_receive_messages(server_url, validated_quiz))
     except OSError as e:
         sys.exit(f"Admin: cannot reach server\n{e}")
     except ConnectionClosedOK as e:
@@ -98,3 +110,17 @@ def main() -> None:
         sys.exit(f"Admin: server disconected\n{e}")
     except KeyboardInterrupt:
         sys.exit("\nAdmin: exit")
+
+
+def print_final_scores(scores: dict[str, int]) -> None:
+    """Print final player scores ordered from highest to lowest."""
+    print("Let's check the final scores!")
+    for player, correct_count in scores.items():
+        print(f"{player}: {correct_count}")
+
+
+def print_question(question: dict[str, list | str]) -> None:
+    """Nicely print text of the question with possible answers."""
+    print(f"Question: {question['text']}")
+    for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
+        print(f"\t{letter}) {opt}")

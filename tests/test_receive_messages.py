@@ -5,6 +5,7 @@ from dataclasses import dataclass
 from typing import TYPE_CHECKING, cast
 
 import pytest
+from quiz_common.models import Quiz
 
 from quiz_admin.__main__ import receive_messages
 
@@ -39,7 +40,9 @@ def test_receive_messages_prints_correct_answer(
         '{"type": "question_result", "correct_answer": "a"}',
     )
 
+    quiz = Quiz(name="Test quiz")
+
     with pytest.raises(StopReceivingError):
-        asyncio.run(receive_messages(cast("ClientConnection", websocket)))
+        asyncio.run(receive_messages(cast("ClientConnection", websocket), quiz))
 
     assert capsys.readouterr().out == "Correct answer: a\n"
