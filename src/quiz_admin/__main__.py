@@ -10,7 +10,6 @@ import json
 import string
 import sys
 from pathlib import Path
-from typing import Any
 
 import aioconsole
 from quiz_common.models import Quiz
@@ -22,7 +21,7 @@ from websockets.exceptions import ConnectionClosedError, ConnectionClosedOK
 from quiz_admin.models import GameLog
 
 
-async def send_receive_messages(uri: str, quiz_data: dict[str, Any]) -> None:
+async def send_receive_messages(uri: str, quiz: Quiz) -> None:
     """
     Establish a websocket connection to the server.
 
@@ -30,8 +29,7 @@ async def send_receive_messages(uri: str, quiz_data: dict[str, Any]) -> None:
     """
     async with connect(uri) as ws:
         # Initial sending the whole quiz data to the server
-        await ws.send(json.dumps(quiz_data))
-        quiz = Quiz(**quiz_data)
+        await ws.send(quiz.model_dump_json())
         await asyncio.gather(send_messages(ws), receive_messages(ws, quiz))
 
 
@@ -64,8 +62,6 @@ async def receive_messages(ws: ClientConnection, quiz: Quiz) -> None:
                             }
                         )
                     )
-                case "final_scores":
-                    print_final_scores(message["scores"])
                 case _:
                     print_question(message)
         except (TypeError, json.JSONDecodeError):
@@ -98,7 +94,7 @@ def main() -> None:
         sys.exit(f"TODO: better error handling\n{e}")
 
     try:
-        asyncio.run(send_receive_messages(server_url, validated_quiz.model_dump()))
+        asyncio.run(send_receive_messages(server_url, validated_quiz))
     except OSError as e:
         sys.exit(f"Admin: cannot reach server\n{e}")
     except ConnectionClosedOK as e:
@@ -109,11 +105,11 @@ def main() -> None:
         sys.exit("\nAdmin: exit")
 
 
-def print_final_scores(scores: list[dict]) -> None:
+def print_final_scores(scores: dict[str, int]) -> None:
     """Print final player scores ordered from highest to lowest."""
     print("Let's check the final scores!")
-    for score in scores:
-        print(f"{score['player']}: {score['correct_count']}")
+    for player, correct_count in scores.items():
+        print(f"{player}: {correct_count}")
 
 
 def print_question(question: dict[str, list | str]) -> None:
