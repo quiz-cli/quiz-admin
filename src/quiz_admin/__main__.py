@@ -67,11 +67,9 @@ def print_question(question: dict[str, list | str]) -> None:
 
 def print_final_scores(message: dict[str, Any]) -> None:
     """Print final player scores ordered from highest to lowest."""
+    by_name = sorted(message["scores"], key=lambda score: score["player"])
+    ranked = sorted(by_name, key=lambda score: score["correct_count"], reverse=True)
     print("Let's check the final scores!")
-    ranked = sorted(
-        message["scores"],
-        key=lambda score: (-score["correct_count"], score["player"]),
-    )
     for score in ranked:
         print(f"{score['player']}: {score['correct_count']}")
 
