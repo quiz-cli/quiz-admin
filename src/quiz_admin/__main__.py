@@ -50,6 +50,8 @@ async def receive_messages(ws: ClientConnection) -> None:
                 print_question(message)
             elif isinstance(message, dict) and message.get("type") == "question_result":
                 print(f"Correct answer: {message['correct_answer']}")
+            elif isinstance(message, dict) and message.get("type") == "final_scores":
+                print_final_scores(message)
             else:
                 print(message)
         except (TypeError, json.JSONDecodeError):
@@ -61,6 +63,15 @@ def print_question(question: dict[str, list | str]) -> None:
     print(f"Question: {question['text']}")
     for letter, opt in zip(string.ascii_letters, question["options"], strict=False):
         print(f"\t{letter}) {opt}")
+
+
+def print_final_scores(message: dict[str, Any]) -> None:
+    """Print final player scores ordered from highest to lowest."""
+    by_name = sorted(message["scores"], key=lambda score: score["player"])
+    ranked = sorted(by_name, key=lambda score: score["correct_count"], reverse=True)
+    print("Let's check the final scores!")
+    for score in ranked:
+        print(f"{score['player']}: {score['correct_count']}")
 
 
 def main() -> None:
