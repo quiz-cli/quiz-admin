@@ -1,0 +1,140 @@
+name: Python a jeho ekosystém
+questions:
+  - text: Který operátor se v Pythonu používá pro celočíselné dělení?
+    options:
+      - { correct: false, answer: / }
+      - { correct: false, answer: "%" }
+      - { correct: true,  answer: "//" }
+      - { correct: false, answer: "**" }
+
+  - text: Co vrátí výraz list(range(2, 7, 2))?
+    options:
+      - { correct: true,  answer: "[2, 4, 6]" }
+      - { correct: false, answer: "[2, 4, 6, 8]" }
+      - { correct: false, answer: "[2, 3, 4, 5, 6]" }
+      - { correct: false, answer: "[4, 6]" }
+
+  - text: K čemu slouží klíčové slovo yield ve funkci?
+    options:
+      - { correct: false, answer: Ukončí celý program. }
+      - { correct: false, answer: Vytvoří anonymní funkci. }
+      - { correct: true,  answer: Předá hodnotu a umožní pokračovat ve vykonávání funkce později. }
+      - { correct: false, answer: Zachytí výjimku. }
+
+  - text: Co je hlavním účelem virtuálního prostředí v Pythonu?
+    options:
+      - { correct: false, answer: Zrychlení běhu Pythonu pomocí kompilace. }
+      - { correct: true,  answer: Izolace závislostí jednotlivých projektů. }
+      - { correct: false, answer: Automatické formátování zdrojového kódu. }
+
+  - text: Který příkaz vytvoří nové virtuální prostředí pomocí standardního modulu venv?
+    options:
+      - { correct: false, answer: python -m pip create .venv }
+      - { correct: true,  answer: python -m venv .venv }
+      - { correct: false, answer: python venv --init .venv }
+      - { correct: false, answer: pip install venv .venv }
+
+  - text: Jaký je hlavní rozdíl mezi seznamem (list) a n-ticí (tuple)?
+    options:
+      - { correct: false, answer: Seznam může obsahovat jen čísla, n-tice libovolné objekty. }
+      - { correct: false, answer: N-tice je vždy seřazená podle hodnot prvků. }
+      - { correct: true,  answer: Seznam je měnitelný, zatímco n-tice je neměnitelná. }
+      - { correct: false, answer: Seznam je určen pro klíče slovníku, n-tice pro hodnoty. }
+
+  - text: Které z následujících hodnot jsou v Pythonu vyhodnoceny jako False?
+    options:
+      - { correct: true,  answer: "[]" }
+      - { correct: false, answer: '"False"' }
+      - { correct: true,  answer: "0" }
+      - { correct: false, answer: '"0"' }
+
+  - text: Která tvrzení o funkcích v Pythonu jsou pravdivá?
+    options:
+      - { correct: true,  answer: Funkce může vracet více hodnot pomocí n-tice. }
+      - { correct: false, answer: Každá funkce musí obsahovat return. }
+      - { correct: true,  answer: Funkce lze předávat jako argumenty. }
+      - { correct: false, answer: Funkce bez return vrací False. }
+
+  - text: Která tvrzení o slovnících (dict) v Pythonu jsou pravdivá?
+    options:
+      - { correct: false, answer: Klíčem může být seznam. }
+      - { correct: true,  answer: Slovníky zachovávají pořadí vložení. }
+      - { correct: false, answer: Klíče musí být vždy řetězce. }
+      - { correct: true,  answer: Klíčem může být n-tice čísel. }
+
+  - text: Které nástroje se používají pro správu závislostí Python projektů?
+    options:
+      - { correct: false, answer: pytest }
+      - { correct: true,  answer: uv }
+      - { correct: false, answer: ruff }
+      - { correct: true,  answer: poetry }
+
+  - text: Která tvrzení o type hints v Pythonu jsou pravdivá?
+    options:
+      - { correct: false, answer: Python standardně kontroluje typy při každém volání funkce. }
+      - { correct: true,  answer: mypy umí provádět statickou typovou kontrolu. }
+      - { correct: false, answer: Typové anotace jsou povinné od Pythonu 3.10. }
+      - { correct: true,  answer: "int | None vyjadřuje sjednocení dvou typů." }
+
+  - text: Která tvrzení o asynchronním programování v Pythonu jsou pravdivá?
+    options:
+      - { correct: false, answer: await lze použít v těle běžné funkce. }
+      - { correct: true,  answer: asyncio je součástí standardní knihovny. }
+      - { correct: false, answer: asyncio automaticky spouští každou coroutine v novém vlákně. }
+      - { correct: true,  answer: asyncio.gather umožňuje souběžné vykonávání awaitables. }
+
+  - text: Která tvrzení o generátorech a iterátorech jsou pravdivá?
+    options:
+      - { correct: false, answer: Generátor musí uchovávat všechny hodnoty v paměti. }
+      - { correct: true,  answer: next() získá další hodnotu z iterátoru. }
+      - { correct: true,  answer: Iterátor implementuje metodu __next__(). }
+      - { correct: true,  answer: Vyčerpaný iterátor vyvolá StopIteration. }
+
+  - text: Která tvrzení o balíčkování a distribuci Python projektů jsou pravdivá?
+    options:
+      - { correct: true,  answer: Wheel je distribuční formát Python balíčků. }
+      - { correct: true,  answer: pyproject.toml může definovat build backend. }
+      - { correct: false, answer: Každý Python balíček musí obsahovat setup.py. }
+      - { correct: false, answer: pip install vždy kompiluje projekt do nativního kódu. }
+
+  - text: Jaký klíčový výraz se v Pythonu používá k definici nové funkce?
+    options:
+      - { correct: false, answer: function }
+      - { correct: false, answer: func }
+      - { correct: false, answer: define }
+      - { correct: true,  answer: def }
+
+  - text: Jakou metodou správně přidáte nový prvek na konec existujícího seznamu (list) v Pythonu?
+    options:
+      - { correct: false, answer: add() }
+      - { correct: true,  answer: append() }
+      - { correct: false, answer: insert() }
+      - { correct: false, answer: push() }
+
+  - text: "Co vypíše následující kód: print(type(lambda x: x + 1))?"
+    options:
+      - { correct: false, answer: "<class 'lambda'>" }
+      - { correct: true,  answer: "<class 'function'>" }
+      - { correct: false, answer: "<class 'method'>" }
+      - { correct: false, answer: "<class 'object'>" }
+
+  - text: Která knihovna je standardním průmyslovým standardem pro práci s tabulkovými daty (Dataframe) v Pythonu?
+    options:
+      - { correct: false, answer: NumPy }
+      - { correct: true,  answer: Pandas }
+      - { correct: false, answer: SciPy }
+      - { correct: false, answer: Matplotlib }
+
+  - text: Které z následujících datových typů jsou v Pythonu mutable (měnitelné)?
+    options:
+      - { correct: true,  answer: list }
+      - { correct: false, answer: tuple }
+      - { correct: true,  answer: dict }
+      - { correct: false, answer: str }
+
+  - text: Která tvrzení platí o správě paměti a proměnných v Pythonu?
+    options:
+      - { correct: true,  answer: Proměnné v Pythonu jsou ve skutečnosti odkazy (ukazatele) na objekty v paměti. }
+      - { correct: false, answer: Python vyžaduje explicitní uvolňování paměti pomocí příkazu `free()`. }
+      - { correct: true,  answer: Garbage collection využívá počítání referencí a detekci cyklických odkazů. }
+      - { correct: false, answer: Všechny objekty v Pythonu jsou po vytvoření neměnné. }
