@@ -1,0 +1,78 @@
+name: Druhý kvíz
+questions:
+  - text: Co dělá příkaz git stash?
+    options:
+      - { correct: false, answer: Trvale smaže všechny neuložené změny v pracovním adresáři. }
+      - { correct: false, answer: Odešle aktuální větev na vzdálený server. }
+      - { correct: true, answer: Dočasně uloží (schová) rozpracované změny, abyste mohli přepnout větev. }
+      - { correct: false, answer: Vytvoří zálohu celého repozitáře do ZIP archivu. }
+
+  - text: Který příkaz v Linuxu slouží k vyhledávání textových vzorů v souborech?
+    options:
+      - { correct: false, answer: find }
+      - { correct: true, answer: grep }
+      - { correct: false, answer: sed }
+      - { correct: false, answer: awk }
+
+  - text: Jaký Linuxový příkaz zobrazí běžící procesy v reálném čase?
+    options:
+      - { correct: false, answer: ps -ef }
+      - { correct: false, answer: watch processes }
+      - { correct: true, answer: top }
+      - { correct: false, answer: sysstat }
+
+  - text: Který nástroj se v Linuxu standardně používá ke správě balíčků v distribucích založených na Debianu (např. Ubuntu)?
+    options:
+      - { correct: false, answer: pacman }
+      - { correct: false, answer: dnf }
+      - { correct: true, answer: apt }
+      - { correct: false, answer: rpm }
+
+  - text: Jaký příkaz se používá k vytvoření symbolického odkazu (symlinku) na soubor v Linuxu?
+    options:
+      - { correct: false, answer: cp -sym <cil> <odkaz> }
+      - { correct: false, answer: mklink <cil> <odkaz> }
+      - { correct: false, answer: link -s <cil> <odkaz> }
+      - { correct: true, answer: ln -s <cil> <odkaz> }
+
+  - text: Který protokol se standardně používá pro zabezpečenou komunikaci s webovými servery?
+    options:
+      - { correct: false, answer: HTTP }
+      - { correct: true, answer: HTTPS }
+      - { correct: false, answer: FTP }
+      - { correct: false, answer: SMTP }
+
+  - text: Která z následujících tvrzení o operačních systémech jsou pravdivá?
+    options:
+      - { correct: true, answer: Linux je open-source operační systém. }
+      - { correct: false, answer: BIOS je běžný uživatelský operační systém. }
+      - { correct: true, answer: Android je založený na linuxovém jádře. }
+      - { correct: false, answer: Každý operační systém musí mít grafické rozhraní. }
+
+  - text: Které z následujících technologií se používají pro virtualizaci?
+    options:
+      - { correct: true, answer: KVM }
+      - { correct: false, answer: PostgreSQL }
+      - { correct: true, answer: VMware ESXi }
+      - { correct: false, answer: Nginx }
+
+  - text: Která tvrzení o databázích SQL jsou pravdivá?
+    options:
+      - { correct: true, answer: Primární klíč jednoznačně identifikuje záznam. }
+      - { correct: true, answer: SQL databáze mohou obsahovat relační vazby. }
+      - { correct: true, answer: JOIN umožňuje spojovat data z více tabulek. }
+      - { correct: true, answer: Index může urychlit vyhledávání záznamů. }
+
+  - text: Které technologie se běžně používají při vývoji kontejnerizovaných aplikací?
+    options:
+      - { correct: true, answer: Docker }
+      - { correct: false, answer: Git }
+      - { correct: true, answer: Podman }
+      - { correct: false, answer: Redis }
+
+  - text: Která tvrzení o kryptografii jsou pravdivá?
+    options:
+      - { correct: true, answer: Hashovací funkce je navržena tak, aby nebylo prakticky možné rekonstruovat původní vstup. }
+      - { correct: false, answer: Symetrické šifrování používá vždy dva různé klíče. }
+      - { correct: true, answer: Digitální podpis umožňuje ověřit autenticitu a integritu zprávy. }
+      - { correct: true, answer: HTTPS využívá kryptografii k zabezpečení komunikace. }
