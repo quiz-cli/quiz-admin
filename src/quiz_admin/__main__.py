@@ -36,8 +36,9 @@ async def send_messages(ws: ClientConnection) -> None:
     """Prompt the user for input and send messages to the server over the websocket."""
     while True:
         user_input = await aioconsole.ainput("Send 'y' to continue\n")
-        if user_input:
-            await ws.send(user_input)
+        if user_input.lower() == "y":
+            # Temporarily send JSON until Message class is created
+            await ws.send(json.dumps({"type": "next_step"}))
 
 
 async def receive_messages(ws: ClientConnection) -> None:
