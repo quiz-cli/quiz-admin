@@ -54,7 +54,7 @@ async def receive_messages(ws: ClientConnection) -> None:
             elif isinstance(message, dict) and message.get("type") == "final_scores":
                 print_final_scores(message)
             else:
-                print(message)
+                print(message.get("text"))
         except (TypeError, json.JSONDecodeError):
             print(response)
 
